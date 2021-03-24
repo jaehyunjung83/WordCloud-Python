@@ -1,3 +1,8 @@
+
+
+
+
+
 # 워드 클라우드에 필요한 라이브러리를 불러옵니다.
 from wordcloud import WordCloud
 # 한국어 자연어 처리 라이브러리를 불러옵니다.
@@ -69,6 +74,34 @@ def process():
     process_from_text(content['text'], content['maxCount'], content['minLength'], words, content['textID'])
     result = {'result': True}
     return jsonify(result)
+# ----------------------------------------------------------------------
+# TalendAPI Tester 에서 테스트 방법
+ 
+#  Method : POST,
+#  (API)URL : http://localhost:5000/process *https아님!!
+#  header : Content-Type, application/json, charset=utf-8 * 한글쓰려면
+
+# body json =>
+#  !!process_from_text의 배열에 정의된 contents들 빠짐없이 다 넣어야 함!!
+#  !!순서는 상관 없는 듯!! 안그럼 500 error남
+#   {
+#  	"textID": "3",
+#  	"text": "안녕하세요? 지금 파이썬 코딩 테스트중입니다. 파이썬이 어려운지 자바가 어려운지 노드가 어려운지 참나... 대부분 다 쓰기 편한 듯 한데 그래도 파이썬이 조금 더 어려운 듯",
+#  	"words": {
+#  		"1": {
+#  			"weight": "7",
+#  			"word": "스터디"
+#  		},
+#  		"2": {
+#  			"weight": "5",
+#  			"word": "공부"
+#  		}
+#  	},
+#  	"maxCount": 4,
+#  	"minLength": 2
+
+#  }
+# ----------------------------------------------------------------------
 
 
 @app.route('/outputs', methods=['GET', 'POST'])
@@ -91,4 +124,6 @@ def validate():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, threaded=True)
+    app.run('0.0.0.0', port=5000, threaded=False) # thread=true로 하면 무한오류 발생!!!
+    
+    
